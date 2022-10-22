@@ -1,0 +1,7 @@
+log/
+deps/
+_build/
+autobahn/reports
+/*.ez
+.DS_Store
+erl_crash.dump

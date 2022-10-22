@@ -1,0 +1,3 @@
+%{
+  "jiffy": {:git, "https://github.com/karlseguin/jiffy", "9252ba5d24caf48f65d8a540f2608ea05dca7a8c", []},
+}
