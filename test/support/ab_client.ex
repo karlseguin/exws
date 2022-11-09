@@ -1,4 +1,4 @@
-defmodule ExWs.Test.ABHandler do
+defmodule ExWs.Tests.ABHandler do
 	use ExWs.Handler
 
 	defp message(:bin, data, state) do

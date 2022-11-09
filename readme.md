@@ -2,19 +2,37 @@ Dependency-Free, Compliant Websocket Server written in Elixir.
 
 Kitchen sink *not* included. Every mandatory [Autobahn Testsuite](https://github.com/crossbario/autobahn-testsuite) case is passing. (Three fragmented UTF-8 are flagged as non-strict and as compression is not implemented, these are all flagged as "Unimplemented")
 
+If you're looking for a channel/room implementation, check out [ExWsChannels](https://github.com/karlseguin/exws_channels).
+
+## Example
+```elixir
+defmodule YourApp.YourWSHandler do
+  # This is the only function you HAVE to define.
+  # Note that WebSocket messages are just bytes that could represent
+  # anything. ExWs exposes these bytes as-is (as an iodata). In most
+  # cases, you'll probably want to decode that using JSON and process
+  # the resulting payload, but exposing the raw bytes allows for 
+  # a lot more possibilities.
+  def message(data, state) do
+    # be careful, data is an iodata
+    case Jason.decode(data) do
+      {:ok, data} -> process(data)
+      _ -> close(3000, "invalid payload")
+    end
+  end
+
+  defp process(%{"join" => channel}) do
+    #...
+  end
+end
+```
+
 ## Usage
 
 Include the dependency in your project:
 
 ```
 {:exms, "~> 0.0.1"}
-```
-
-Add an `:exws` section to your config:
-```
-config :exws,
-  port: 4545,
-  handler: YourApp.YourWSHandler
 ```
 
 Define your handler:
@@ -27,6 +45,14 @@ defmodule YourApp.YourWSHandler do
     state
   end
 end
+```
+
+And start the server in your supervisor tree:
+```elixir
+children = [
+  # ...
+  {ExWs.Supervisor, [port: 4545, handler: YourApp.YourWSHandler]}
+]
 ```
 
 ## Writing
@@ -94,6 +120,7 @@ Within your handler, the following functions are available:
 - `ping/0` send a ping message to the client
 - `write/1` writes the message to the client
 - `close/0` close the connection
+- `close2/` close the connection specifying a `code` and `message`. As per the specs, your `code` should be 3000-4999. Your message must be < 123 bytes.
 - `get_socket/0` gets the underlying socket
 
 Note that `get_socket/0` will return the socket during `init/0` and `closed/2` (but the socket can be closed by the other side at any point).

@@ -13,6 +13,7 @@ defmodule ExWs.Handler do
 			def init({socket, reader}) do
 				put_socket(socket)
 				put_reader(reader)
+				:inet.setopts(socket, send_timeout_close: true, send_timeout: 10_000, exit_on_close: true)
 				{:ok, init()}
 			end
 
@@ -53,7 +54,6 @@ defmodule ExWs.Handler do
 						{:ok, reader} -> put_reader(reader); :ok
 						{:ok, messages, reader} -> put_reader(reader); {:ok, messages}
 					end
-
 
 				state = case message do
 					:ok -> state
@@ -131,6 +131,8 @@ defmodule ExWs.Handler do
 
 			defp get_reader(), do: Process.get(:reader)
 			defp put_reader(reader), do: Process.put(:reader, reader)
+
+			defp pid_socket(), do: {self(), Process.get(:socket)}
 		end
 	end
 end

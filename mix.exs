@@ -5,7 +5,7 @@ defmodule ExWs.Mixfile do
 		[
 			app: :exws,
 			deps: deps(),
-			version: "0.0.2",
+			version: "0.0.3",
 			elixir: "~> 1.14",
 			elixirc_paths: paths(Mix.env),
 			build_embedded: Mix.env == :prod,
@@ -15,7 +15,7 @@ defmodule ExWs.Mixfile do
 			package: [
 				licenses: ["MIT"],
 				links: %{
-					"git" => "https://github.com/karlseguin/exws"
+					"https://github.com/karlseguin/exws" => "https://github.com/karlseguin/exws"
 				},
 				maintainers: ["Karl Seguin"]
 			]

@@ -21,7 +21,7 @@ defmodule ExWs.Writer do
 		{:framed, @empty_close}
 	end
 
-	def close(payload, code) do
+	def close(payload, code) when byte_size(payload) < 123 do
 		{:framed, [@op_close, encode_length(payload, 2), <<code::big-16>>, payload]}
 	end
 
