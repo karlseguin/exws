@@ -6,7 +6,7 @@ defmodule ExWs.Tests.WS do
 	defstruct [:socket, :status, :headers]
 
 	def connect(port) do
-		{:ok, socket} = :gen_tcp.connect('127.0.0.1', port, [:binary, active: false])
+		{:ok, socket} = :gen_tcp.connect(~c"127.0.0.1", port, [:binary, active: false])
 		%WS{socket: socket}
 	end
 

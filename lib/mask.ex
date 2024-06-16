@@ -22,7 +22,7 @@ defmodule ExWs.Mask do
 		unmask(m, data, [unmasked, <<bxor(word, mask)::256>>])
 	end
 
-	for i <- (31..1) do
+	for i <- (31..1//-1) do
 		size = 8 * i
 		defp unmask(<<mask::unquote(size), _::binary>>, <<word::unquote(size)>>, unmasked) do
 			[unmasked, <<bxor(word, mask)::unquote(size)>>]
